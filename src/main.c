@@ -20,6 +20,9 @@ int main(int argc, char* argv[]) {
     if (!window) {
         fprintf(stderr, "%s", "Failed to Initialized Window");
     }
+    glfwMakeContextCurrent(window);
+    gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+    
     glfwDestroyWindow(window);
     glfwTerminate();
     return 0;
