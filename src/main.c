@@ -1,5 +1,5 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include "glad/glad.h"
+#include "GLFW/glfw3.h"
 
 #include <stdio.h>
 
@@ -12,6 +12,14 @@ int main(int argc, char* argv[]) {
         fprintf(stderr, "%s", "Failed to Initialized GLFW");
     }
     glfwSetErrorCallback(error_callback);
+
+    const char* pName = "AeroSim";
+    int wWidth = 800;
+    int wHeight = 600;
+    GLFWwindow* window = glfwCreateWindow(wWidth, wHeight, pName, NULL, NULL);
+    if (!window) {
+        fprintf(stderr, "%s", "Failed to Initialized Window");
+    }
     glfwTerminate();
     return 0;
 }

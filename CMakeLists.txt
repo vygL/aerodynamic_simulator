@@ -7,8 +7,16 @@ include_directories(
     extern/glfw/include/
 )
 
+set( GLFW_BUILD_DOCS OFF CACHE BOOL  "GLFW lib only" )
+set( GLFW_INSTALL OFF CACHE BOOL  "GLFW lib only" )
+set( GLAD_GL "" )
+
 find_package(OpenGL REQUIRED)
 add_executable(aero_sim)
+
+add_subdirectory(
+    extern/glfw
+)
 
 target_sources(
     aero_sim
@@ -23,4 +31,8 @@ target_compile_features(
     c_std_23
 )
 
-
+target_link_libraries(
+    aero_sim
+    glfw
+    OpenGL::GL
+)
