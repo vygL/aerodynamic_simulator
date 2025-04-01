@@ -20,6 +20,7 @@ int main(int argc, char* argv[]) {
     if (!window) {
         fprintf(stderr, "%s", "Failed to Initialized Window");
     }
+    glfwDestroyWindow(window);
     glfwTerminate();
     return 0;
 }
