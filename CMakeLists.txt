@@ -3,7 +3,8 @@ project(aero_sim)
 
 include_directories(
     include/
-    extern/
+    extern/glad/include/
+    extern/glfw/include/
 )
 
 find_package(OpenGL REQUIRED)
@@ -13,6 +14,7 @@ target_sources(
     aero_sim
     PRIVATE
     src/main.c
+    extern/glad/src/glad.c
 )
 
 target_compile_features(
