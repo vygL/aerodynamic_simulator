@@ -4,6 +4,8 @@
 
 #include <stdio.h>
 
+#include "test.c"
+
 void error_callback(int error, const char* description) {
     fprintf(stdout, "GLFW Error: %s", description);
 }
@@ -14,6 +16,11 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     }
 }
 
+void framebuffersize_callback(GLFWwindow* window, int width, int height) {
+    glViewport(0, 0, width, height);
+}
+
+
 int main(int argc, char* argv[]) {
     glfwSetErrorCallback(error_callback);
     if (!glfwInit()) {
@@ -23,6 +30,8 @@ int main(int argc, char* argv[]) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+
     const char* pName = "AeroSim";
     int wWidth = 800;
     int wHeight = 600;
@@ -31,19 +40,26 @@ int main(int argc, char* argv[]) {
         fprintf(stderr, "%s", "Failed to Initialized Window");
         return -1;
     }
+    glfwSetFramebufferSizeCallback(window, framebuffersize_callback);
     glfwSetKeyCallback(window, key_callback);
     glfwMakeContextCurrent(window);
-    gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+        frpintf(stderr, "%s", "Failed to load GLAD");
+        return -1;
+    }
+    glfwSwapInterval(1);
 
 
     int w, h;
     glfwGetFramebufferSize(window, &w, &h);
     glViewport(0, 0, w, h);
 
-    glfwSwapInterval(1);
-    while (!glfwWindowShouldClose(window)) {
-        glfwSwapBuffers(window);
 
+
+    while (!glfwWindowShouldClose(window)) {
+        
+        
+        glfwSwapBuffers(window);
         glfwPollEvents();
     }
     glfwDestroyWindow(window);

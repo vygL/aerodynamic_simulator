@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.24)
 project(aero_sim)
 
 include_directories(
+    model/
+    shader/
     include/
     extern/glad/include/
     extern/glfw/include/
