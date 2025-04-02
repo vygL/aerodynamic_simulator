@@ -1,29 +1,43 @@
 #include "shader.h"
 
-void readFileIntoBuffer(const char* filePath, char* strbuf) {
+long getFileSize(const char* filePath) {
+    FILE* file;
+    long len;
+    
+    file = fopen(filePath, "r");
+    if (!file) {
+        fprintf(stderr, "%s", "Unable to open file");
+        exit(-1);
+    }
+    if (fseek(file, 0, SEEK_END) == 0) {
+        len = ftell(file);
+        if (len == -1) {
+            fprintf(stderr, "%s", "Unable to read file size");
+            exit(-1);
+        }
+    }
+
+    fclose(file);
+
+    return len;
+}
+
+void readFileIntoBuffer(const char* filePath, long fileSize, char* strbuf) {
     FILE* file;
     size_t newLen;
 
     file = fopen(filePath, "r");
     if (!file) {
         fprintf(stderr, "%s", "Unable to open shader file");
-        return;
+        exit(-1);
     }
-    if (fseek(file, 0, SEEK_END) == 0) {
-        long fSize = ftell(file);
-        if (fSize == -1) {
-            fprintf(stderr, "%s", "Unable to read file size");
-            return;
-        }
-        rewind(file);
-        strbuf = malloc(fSize + 1);
-        newLen = fread(strbuf, 1, fSize, file);
-        if (ferror(file) != 0) {
-            fprintf(stderr, "%s", "Error reading file");
-            return;
-        }
-        strbuf[newLen++] = '\0';
+    newLen = fread(strbuf, 1, fileSize, file);
+    if (ferror(file) != 0) {
+        fprintf(stderr, "%s", "Error reading file");
+        exit(-1);
     }
+    strbuf[newLen++] = '\0';
+
     fclose(file);
 }
 
@@ -40,8 +54,9 @@ unsigned int createShader(GLenum shaderType, const char* shaderSource) {
     if (!success) {
         glGetShaderInfoLog(s, 512, NULL, infoLog);
         fprintf(stderr, "%s", infoLog);
-        return -1;
+        exit(-1);
     }
+    return s;
 }
 
 void linkShaders(GLuint programID, GLuint vShader, GLuint fShader) {
@@ -56,6 +71,7 @@ void linkShaders(GLuint programID, GLuint vShader, GLuint fShader) {
     if (!success) {
         glGetProgramInfoLog(programID, 512, NULL, infoLog);
         fprintf(stderr, "%s", infoLog);
+        exit(-1);
     }
 }
 
@@ -64,13 +80,20 @@ unsigned int createShaderProgram(const char* vertexPath, const char* fragmentPat
     unsigned int v, f;
     char* vSource;
     char* fSource;
-    
+
     int success;
     char infoLog[512];
 
+    long vFileSize, fFileSize;
+    
+    vFileSize = getFileSize(vertexPath);
+    fFileSize = getFileSize(fragmentPath);
 
-    readFileIntoBuffer(vertexPath, vSource);
-    readFileIntoBuffer(fragmentPath, fSource);
+    vSource = malloc(vFileSize);
+    fSource = malloc(fFileSize);
+
+    readFileIntoBuffer(vertexPath, vFileSize, vSource);
+    readFileIntoBuffer(fragmentPath, fFileSize, fSource);
 
     v = createShader(GL_VERTEX_SHADER, vSource);
     f = createShader(GL_FRAGMENT_SHADER, fSource);
