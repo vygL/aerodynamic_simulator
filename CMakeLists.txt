@@ -5,6 +5,7 @@ include_directories(
     include/
     extern/glad/include/
     extern/glfw/include/
+    extern/linmath.h/
 )
 
 set( GLFW_BUILD_DOCS OFF CACHE BOOL  "GLFW lib only" )
