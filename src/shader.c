@@ -7,20 +7,20 @@ void readFileIntoBuffer(const char* filePath, char* strbuf) {
     file = fopen(filePath, "r");
     if (!file) {
         fprintf(stderr, "%s", "Unable to open shader file");
-        return -1;
+        return;
     }
     if (fseek(file, 0, SEEK_END) == 0) {
         long fSize = ftell(file);
         if (fSize == -1) {
             fprintf(stderr, "%s", "Unable to read file size");
-            return -1;
+            return;
         }
         rewind(file);
         strbuf = malloc(fSize + 1);
         newLen = fread(strbuf, 1, fSize, file);
         if (ferror(file) != 0) {
             fprintf(stderr, "%s", "Error reading file");
-            return -1;
+            return;
         }
         strbuf[newLen++] = '\0';
     }
@@ -34,7 +34,7 @@ unsigned int createShader(GLenum shaderType, const char* shaderSource) {
 
 
     s = glCreateShader(shaderType);
-    glShaderSource(s, 1, shaderSource, NULL);
+    glShaderSource(s, 1, &shaderSource, NULL);
     glCompileShader(s);
     glGetShaderiv(s, GL_COMPILE_STATUS, &success);
     if (!success) {
@@ -62,7 +62,9 @@ void linkShaders(GLuint programID, GLuint vShader, GLuint fShader) {
 unsigned int createShaderProgram(const char* vertexPath, const char* fragmentPath) {
     unsigned int id;
     unsigned int v, f;
-    char* vSource, fSource;
+    char* vSource;
+    char* fSource;
+    
     int success;
     char infoLog[512];
 

@@ -26,6 +26,7 @@ set (
     src/main.c
     src/callback.c
     src/setup.c
+    src/shader.c
 )
 
 target_sources(
