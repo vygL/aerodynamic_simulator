@@ -12,6 +12,10 @@
 
 int main(int argc, char* argv[]) {
     GLFWwindow* window = default_setup();
+    if (!window) {
+        return -1;
+    }
+    
     while (!glfwWindowShouldClose(window)) {
         
         
