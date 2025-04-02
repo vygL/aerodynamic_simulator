@@ -21,11 +21,17 @@ add_subdirectory(
     extern/glfw
 )
 
+set (
+    SOURCES
+    src/main.c
+    src/callback.c
+    src/setup.c
+)
+
 target_sources(
     aero_sim
     PRIVATE
-    src/callback.c
-    src/main.c
+    ${SOURCES}
     extern/glad/src/glad.c
 )
 
