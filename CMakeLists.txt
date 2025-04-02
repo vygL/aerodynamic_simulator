@@ -24,6 +24,7 @@ add_subdirectory(
 target_sources(
     aero_sim
     PRIVATE
+    src/callback.c
     src/main.c
     extern/glad/src/glad.c
 )

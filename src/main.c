@@ -4,21 +4,9 @@
 
 #include <stdio.h>
 
+#include "callback.h"
+
 #include "test.c"
-
-void error_callback(int error, const char* description) {
-    fprintf(stdout, "GLFW Error: %s", description);
-}
-
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-        glfwSetWindowShouldClose(window, GLFW_TRUE);
-    }
-}
-
-void framebuffersize_callback(GLFWwindow* window, int width, int height) {
-    glViewport(0, 0, width, height);
-}
 
 
 int main(int argc, char* argv[]) {
@@ -44,7 +32,7 @@ int main(int argc, char* argv[]) {
     glfwSetKeyCallback(window, key_callback);
     glfwMakeContextCurrent(window);
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        frpintf(stderr, "%s", "Failed to load GLAD");
+        fprintf(stderr, "%s", "Failed to load GLAD");
         return -1;
     }
     glfwSwapInterval(1);
