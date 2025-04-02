@@ -81,14 +81,14 @@ unsigned int createShaderProgram(const char* vertexPath, const char* fragmentPat
     return id;
 }
 
-void setBool(const char* name, int value) {
-
+void setBool(GLuint programID, const char* name, int value) {
+    glUniform1i(glGetUniformLocation(programID, name), value);
 }
 
-void setInt(const char* name, int value) {
-
+void setInt(GLuint programID, const char* name, int value) {
+    glUniform1i(glGetUniformLocation(programID, name), value);
 }
 
-void setFloat(const char* name, float value) {
-    
+void setFloat(GLuint programID, const char* name, float value) {
+    glUniform1f(glGetUniformLocation(programID, name), value);
 }

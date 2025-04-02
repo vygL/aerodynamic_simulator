@@ -7,6 +7,6 @@
 #include <stdlib.h>
 
 unsigned int createShaderProgram(const char* vertexPath, const char* fragmentPath);
-void setBool(const char* name, int value);
-void setInt(const char* name, int value);
-void setFloat(const char* name, float value);
+void setBool(GLuint programID, const char* name, int value);
+void setInt(GLuint programID, const char* name, int value);
+void setFloat(GLuint programID, const char* name, float value);
