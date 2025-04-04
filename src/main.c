@@ -8,6 +8,7 @@
 #include "setup.h"
 #include "callback.h"
 #include "shader.h"
+#include "utility.h"
 
 #include "test.c"
 
@@ -37,7 +38,7 @@ int main(int argc, char* argv[]) {
     glBufferData(GL_ARRAY_BUFFER, sizeof(mTriangle), mTriangle, GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(point), (void*)0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(point), (void*)(3 * sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(point), (void*)(member_size(point, vertex)));
 
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);

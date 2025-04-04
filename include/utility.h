@@ -1,4 +1,8 @@
+#pragma once
+
 #include "linmath.h"
+
+#define member_size(type, member) (sizeof( ((type *)0)->member ))
 
 typedef struct {
     vec3 vertex;
